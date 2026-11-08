@@ -12,7 +12,7 @@ const ADMIN_PASSWORD = 'admin123'; // Simple password for now
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Simple Admin Auth Middleware
 const adminAuth = (req, res, next) => {
