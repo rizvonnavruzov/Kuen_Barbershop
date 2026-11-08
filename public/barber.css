@@ -33,16 +33,17 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(13, 13, 13, 0.8);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--glass-border);
-    padding: 25px 0;
+    background: rgba(10, 10, 10, 0.94);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+    padding: 12px 0;
 }
 
 .nav-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
 }
 
 .logo {
@@ -66,53 +67,80 @@ body {
 
 .nav-links {
     display: flex;
+    align-items: center;
     list-style: none;
-    gap: 30px;
+    gap: 5px;
 }
 
 .nav-links a {
-    color: white;
+    display: block;
+    color: #dedbd2;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    transition: 0.3s;
+    font-size: 0.88rem;
+    letter-spacing: 0.01em;
+    padding: 9px 13px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .nav-links a:hover {
     color: var(--primary-color);
+    background: rgba(212, 175, 55, 0.08);
+    border-color: rgba(212, 175, 55, 0.16);
 }
 
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 16px;
 }
 
 .lang-switch {
     display: flex;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--glass-border);
+    align-items: center;
+    gap: 3px;
+    background: #171715;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 999px;
     padding: 4px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
 }
 
 .lang-switch button {
+    appearance: none;
+    -webkit-appearance: none;
+    display: block;
     background: transparent;
-    border: none;
-    color: #ccc;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 6px 10px;
+    border: 1px solid transparent;
+    color: #bdbbb4;
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    padding: 8px 11px;
     border-radius: 999px;
     cursor: pointer;
-    font-family: inherit;
+    transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .lang-switch button.active {
-    background: var(--primary-color);
-    color: #111;
+    background: linear-gradient(135deg, #e7cb68, #c9a43b);
+    color: #17140b;
+    box-shadow: 0 2px 9px rgba(212, 175, 55, 0.2);
+}
+
+.lang-switch button:not(.active):hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+}
+
+.nav-links a:focus-visible,
+.lang-switch button:focus-visible {
+    outline: 2px solid #e7cb68;
+    outline-offset: 3px;
 }
 
 .admin-header {
@@ -392,7 +420,20 @@ input, select {
 @media (max-width: 768px) {
     .form-row { grid-template-columns: 1fr; }
     .hero-content h1 { font-size: 3rem; }
-    .nav-content { flex-wrap: wrap; gap: 16px; }
-    .nav-actions { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
-    .nav-links { gap: 16px; }
+    .navbar { padding: 13px 0; }
+    .nav-content { flex-direction: column; justify-content: center; gap: 12px; }
+    .logo { gap: 10px; }
+    .logo img { width: 42px; height: 42px; }
+    .logo span { font-size: 1.25rem; }
+    .nav-actions { width: 100%; flex-direction: column; justify-content: center; gap: 8px; }
+    .nav-links { justify-content: center; gap: 2px; }
+    .nav-links a { font-size: 0.82rem; padding: 7px 11px; }
+    .lang-switch { width: min(100%, 276px); justify-content: center; }
+    .lang-switch button { flex: 1; padding: 8px 5px; font-size: 0.72rem; }
+}
+
+@media (max-width: 360px) {
+    .logo span { font-size: 1.1rem; }
+    .logo img { width: 38px; height: 38px; }
+    .nav-links a { padding: 7px 9px; font-size: 0.78rem; }
 }
