@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Kuen Barbershop</title>
+    <title>Панели усто | Kuen Barbershop</title>
     <link rel="stylesheet" href="barber.css">
     <style>
         body { padding-top: 50px; }
@@ -20,20 +20,29 @@
         .btn-reject { background: #e74c3c; color: white; }
     </style>
 </head>
-<body>
+<body data-i18n-title="meta.adminTitle">
     <div class="admin-container">
-        <h1 style="color: var(--primary-color);">Master Admin Dashboard</h1>
-        <p>Review booking requests and confirm Alif payments here.</p>
+        <div class="admin-header">
+            <div>
+                <h1 style="color: var(--primary-color);" data-i18n="admin.title">Панели усто</h1>
+                <p data-i18n="admin.subtitle">Дархостҳои сабт ва пардохтҳои Алифро дар ин ҷо санҷед.</p>
+            </div>
+            <div class="lang-switch" role="group" aria-label="Забон" data-i18n-aria="lang.group">
+                <button type="button" data-lang="tg" class="active" aria-pressed="true">Тоҷикӣ</button>
+                <button type="button" data-lang="ru" aria-pressed="false">Русский</button>
+                <button type="button" data-lang="en" aria-pressed="false">English</button>
+            </div>
+        </div>
 
         <table class="booking-table">
             <thead>
                 <tr>
-                    <th>Customer</th>
-                    <th>Service</th>
-                    <th>Date & Time</th>
-                    <th>Bank</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th data-i18n="admin.customer">Мизоҷ</th>
+                    <th data-i18n="admin.service">Хизмат</th>
+                    <th data-i18n="admin.datetime">Сана ва вақт</th>
+                    <th data-i18n="admin.bank">Бонк</th>
+                    <th data-i18n="admin.status">Ҳолат</th>
+                    <th data-i18n="admin.actions">Амалҳо</th>
                 </tr>
             </thead>
             <tbody id="admin-table-body">
@@ -42,12 +51,18 @@
         </table>
     </div>
 
+    <script src="i18n.js"></script>
     <script>
         let adminPassword = sessionStorage.getItem('adminPassword');
 
+        function statusLabel(status) {
+            const key = { pending: 'admin.pending', confirmed: 'admin.confirmed', rejected: 'admin.rejected' }[status];
+            return key ? t(key) : status;
+        }
+
         function checkAuth() {
             if (!adminPassword) {
-                adminPassword = prompt("Please enter the master admin password:");
+                adminPassword = prompt(t('admin.passwordPrompt'));
                 if (adminPassword) {
                     sessionStorage.setItem('adminPassword', adminPassword);
                 }
@@ -62,7 +77,7 @@
             })
             .then(res => {
                 if (res.status === 401) {
-                    alert("Invalid password! Access denied.");
+                    alert(t('admin.invalidPassword'));
                     sessionStorage.removeItem('adminPassword');
                     adminPassword = null;
                     location.reload();
@@ -81,14 +96,14 @@
                             <strong>${b.name}</strong><br>
                             <small>${b.phone}</small>
                         </td>
-                        <td>${b.service.toUpperCase()}</td>
-                        <td>${b.date} at ${b.time}</td>
+                        <td>${serviceLabel(b.service)}</td>
+                        <td>${b.date} ${t('admin.at')} ${b.time}</td>
                         <td>${b.bank.toUpperCase()}</td>
-                        <td><span class="status-badge status-${b.status}">${b.status.toUpperCase()}</span></td>
+                        <td><span class="status-badge status-${b.status}">${statusLabel(b.status)}</span></td>
                         <td class="actions">
                             ${b.status === 'pending' ? `
-                                <button onclick="updateStatus('${b.id}', 'confirmed')" class="btn-small btn-approve">Confirm Payment</button>
-                                <button onclick="updateStatus('${b.id}', 'rejected')" class="btn-small btn-reject">Not Received</button>
+                                <button onclick="updateStatus('${b.id}', 'confirmed')" class="btn-small btn-approve">${t('admin.confirm')}</button>
+                                <button onclick="updateStatus('${b.id}', 'rejected')" class="btn-small btn-reject">${t('admin.reject')}</button>
                             ` : '-'}
                         </td>
                     `;
@@ -108,7 +123,7 @@
                 body: JSON.stringify({ id, status })
             }).then(res => {
                 if (res.status === 401) {
-                    alert("Session expired or invalid password.");
+                    alert(t('admin.session'));
                     location.reload();
                 } else {
                     loadBookings();
@@ -119,6 +134,7 @@
         checkAuth();
         loadBookings();
         setInterval(loadBookings, 8000); // Refresh every 8s
+        document.addEventListener('languagechange', loadBookings);
     </script>
 </body>
 </html>

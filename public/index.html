@@ -1,28 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuen Barbershop | Men's Grooming in Khorog</title>
+    <title>Kuen Barbershop | Мӯйтарошии мардона дар Хоруғ</title>
     <link rel="stylesheet" href="barber.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-i18n-title="meta.title">
     <div id="status-banner"></div>
 
     <nav class="navbar">
         <div class="container nav-content">
             <div class="logo">
-                <img src="mountain-logo.svg" alt="Kuen Barbershop mountain logo">
+                <img src="mountain-logo.svg" alt="Нишони кӯҳии Kuen Barbershop" data-i18n-alt="logo.alt">
                 <span>Kuen Barbershop</span>
             </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#price">Price</a></li>
-                <li><a href="#booking">Book</a></li>
-            </ul>
+            <div class="nav-actions">
+                <ul class="nav-links">
+                    <li><a href="#home" data-i18n="nav.home">Асосӣ</a></li>
+                    <li><a href="#price" data-i18n="nav.price">Нарх</a></li>
+                    <li><a href="#booking" data-i18n="nav.book">Сабт</a></li>
+                </ul>
+                <div class="lang-switch" role="group" aria-label="Забон" data-i18n-aria="lang.group">
+                    <button type="button" data-lang="tg" class="active" aria-pressed="true">Тоҷикӣ</button>
+                    <button type="button" data-lang="ru" aria-pressed="false">Русский</button>
+                    <button type="button" data-lang="en" aria-pressed="false">English</button>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -30,8 +37,8 @@
     <header id="home">
         <div class="hero-content">
             <h1>KUEN BARBERSHOP</h1>
-            <p>Professional Men's Haircuts • Khorog City</p>
-            <a href="#booking" class="btn-primary" style="width: auto;">Book Appointment</a>
+            <p data-i18n="hero.subtitle">Мӯйтарошии касбии мардона • шаҳри Хоруғ</p>
+            <a href="#booking" class="btn-primary" style="width: auto;" data-i18n="hero.cta">Вақт гирифтан</a>
         </div>
     </header>
 
@@ -39,14 +46,14 @@
     <section class="container services" id="price">
         <div class="service-grid">
             <div class="glass-panel service-card">
-                <h3>Men's Haircut</h3>
-                <p>Full men's haircut and styling. Available Monday through Saturday.</p>
-                <div class="price">80 сомони</div>
+                <h3 data-i18n="service.haircutTitle">Мӯйтарошии мардона</h3>
+                <p data-i18n="service.haircutDesc">Мӯйтарошӣ ва ороиши пурра. Аз душанбе то шанбе.</p>
+                <div class="price" data-i18n="service.haircutPrice">80 сомонӣ</div>
             </div>
             <div class="glass-panel service-card">
-                <h3>Beard Trim</h3>
-                <p>Beard trim and line-up. Available Monday through Saturday.</p>
-                <div class="price">20 сомони</div>
+                <h3 data-i18n="service.beardTitle">Тарошидани риш</h3>
+                <p data-i18n="service.beardDesc">Тарошидан ва рост кардани хати риш. Аз душанбе то шанбе.</p>
+                <div class="price" data-i18n="service.beardPrice">20 сомонӣ</div>
             </div>
         </div>
     </section>
@@ -55,35 +62,35 @@
     <section class="booking-section" id="booking">
         <div class="container">
             <div class="glass-panel booking-form">
-                <h2 style="margin-bottom: 25px; text-align: center; color: var(--primary-color);">Complete Your Booking</h2>
+                <h2 style="margin-bottom: 25px; text-align: center; color: var(--primary-color);" data-i18n="form.title">Сабтро пурра кунед</h2>
                 <form id="book-form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Your Name</label>
-                            <input type="text" id="name" placeholder="Enter full name" required>
+                            <label data-i18n="form.name">Номи шумо</label>
+                            <input type="text" id="name" placeholder="Номи пурраро ворид кунед" data-i18n-placeholder="form.namePlaceholder" required>
                         </div>
                         <div class="form-group">
-                            <label>Phone Number</label>
+                            <label data-i18n="form.phone">Рақами телефон</label>
                             <input type="tel" id="phone" placeholder="+992 ..." required>
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Select Service</label>
+                            <label data-i18n="form.service">Хизматро интихоб кунед</label>
                             <select id="service" required>
-                                <option value="haircut">Men's Haircut (90 min) - 80 сомони</option>
-                                <option value="beard">Beard Trim (30 min) - 20 сомони</option>
+                                <option value="haircut" data-i18n="service.haircutOption">Мӯйтарошии мардона (90 дақиқа) — 80 сомонӣ</option>
+                                <option value="beard" data-i18n="service.beardOption">Тарошидани риш (30 дақиқа) — 20 сомонӣ</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Select Date</label>
-                            <input type="date" id="date" required>
+                            <label data-i18n="form.date">Санаро интихоб кунед</label>
+                            <input type="date" id="date" lang="tg" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Select Time Slot</label>
+                        <label data-i18n="form.time">Вақтро интихоб кунед</label>
                         <div id="time-grid" class="time-grid">
                             <!-- JS dynamic population -->
                         </div>
@@ -91,15 +98,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Payment Method</label>
+                        <label data-i18n="form.payment">Тарзи пардохт</label>
                         <select id="bank" required>
-                            <option value="alif">Alif (Tajikistan)</option>
+                            <option value="alif" data-i18n="form.bankAlif">Алиф (Тоҷикистон)</option>
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn-primary" id="book-btn">Continue to Booking Request</button>
-                    <p style="font-size: 0.85rem; color: #888; text-align: center; margin-top: 20px;">
-                        * After submitting, contact us on WhatsApp for Alif payment details. Your booking is confirmed after payment is verified.
+                    <button type="submit" class="btn-primary" id="book-btn" data-i18n="form.submit">Идомаи дархости сабт</button>
+                    <p style="font-size: 0.85rem; color: #888; text-align: center; margin-top: 20px;" data-i18n="form.note">
+                        * Пас аз фиристодан барои тафсилоти пардохти Алиф бо мо дар WhatsApp тамос гиред. Сабти шумо пас аз тасдиқи пардохт тасдиқ мешавад.
                     </p>
                 </form>
             </div>
@@ -111,16 +118,16 @@
         <div class="container footer-content">
             <div class="footer-info">
                 <h3>Kuen Barbershop</h3>
-                <p>Khorog City • Monday–Saturday, 10:00–17:00 • Sunday closed</p>
+                <p data-i18n="footer.hours">шаҳри Хоруғ • Душанбе–Шанбе, 10:00–17:00 • Якшанбе пӯшида</p>
                 <div style="margin-top: 20px;">
-                    <p><strong>Phone:</strong> <a href="tel:+992100080400">+992 100080400</a></p>
+                    <p><strong data-i18n="footer.phone">Телефон:</strong> <a href="tel:+992100080400">+992 100080400</a></p>
                     <p><strong>WhatsApp:</strong> <a href="https://wa.me/992100080400" target="_blank" rel="noopener noreferrer">+992 100080400</a></p>
-                    <p><strong>Email:</strong> <a href="mailto:mubinkhalimov57@gmail.com">mubinkhalimov57@gmail.com</a></p>
+                    <p><strong data-i18n="footer.emailLabel">Почта:</strong> <a href="mailto:mubinkhalimov57@gmail.com">mubinkhalimov57@gmail.com</a></p>
                 </div>
             </div>
             <div class="footer-social">
                 <a href="https://wa.me/992100080400" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                <a href="mailto:mubinkhalimov57@gmail.com">Email</a>
+                <a href="mailto:mubinkhalimov57@gmail.com" data-i18n="footer.email">Почта</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -131,12 +138,12 @@
     <!-- Payment Modal -->
     <div id="payment-modal" class="modal-overlay" style="display: none;">
         <div class="glass-panel modal-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 20px;">Submit Booking Request</h2>
-            <p>Your <span id="payment-service">haircut</span> costs <span id="payment-amount">80</span> сомони. Contact us on WhatsApp for Alif payment details. We will confirm your booking after payment is verified.</p>
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;" data-i18n="modal.title">Фиристодани дархости сабт</h2>
+            <p id="payment-summary">Мӯйтарошӣ 80 сомонӣ арзиш дорад. Барои тафсилоти пардохти Алиф бо мо дар WhatsApp тамос гиред. Мо сабти шуморо пас аз санҷидани пардохт тасдиқ мекунем.</p>
 
             <div class="modal-buttons">
-                <button onclick="closePaymentModal()" class="btn-secondary">Cancel</button>
-                <button onclick="submitBookingRequest()" class="btn-primary">Submit Request</button>
+                <button onclick="closePaymentModal()" class="btn-secondary" data-i18n="modal.cancel">Бекор кардан</button>
+                <button onclick="submitBookingRequest()" class="btn-primary" id="confirm-request-btn" data-i18n="modal.submit">Фиристодани дархост</button>
             </div>
         </div>
     </div>
@@ -144,20 +151,21 @@
     <!-- Status Overlay -->
     <div id="status-overlay" class="modal-overlay" style="display: none;">
         <div class="glass-panel modal-content">
-            <h2 id="status-title" style="color: var(--primary-color);">Booking Request Submitted</h2>
-            <p id="status-desc">The master will review your booking request and payment.</p>
+            <h2 id="status-title" style="color: var(--primary-color);" data-i18n="status.submittedTitle">Дархости сабт фиристода шуд</h2>
+            <p id="status-desc" data-i18n="status.submittedDesc">Усто дархости сабт ва пардохти шуморо баррасӣ мекунад.</p>
             <div id="status-spinner" class="spinner"></div>
-            <p style="font-size: 0.9rem; color: #888; margin-top: 20px;">
-                Keep this page open while we check your booking status.
+            <p id="status-hint" style="font-size: 0.9rem; color: #888; margin-top: 20px;" data-i18n="status.keepOpen">
+                Ин саҳифаро кушода нигоҳ доред, то мо ҳолати сабтро санҷем.
             </p>
         </div>
     </div>
 
     <!-- Admin Badge (Master Control) -->
     <div class="admin-badge">
-        <a href="admin.html" style="color: inherit; text-decoration: none;">Admin Dashboard</a>
+        <a href="admin.html" style="color: inherit; text-decoration: none;" data-i18n="admin.link">Панели маъмур</a>
     </div>
 
+    <script src="i18n.js"></script>
     <script src="barber.js"></script>
 </body>
 </html>

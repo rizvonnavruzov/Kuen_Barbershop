@@ -83,6 +83,46 @@ body {
     color: var(--primary-color);
 }
 
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.lang-switch {
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 4px;
+}
+
+.lang-switch button {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.lang-switch button.active {
+    background: var(--primary-color);
+    color: #111;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
 /* Header */
 header {
     height: 90vh;
@@ -352,4 +392,7 @@ input, select {
 @media (max-width: 768px) {
     .form-row { grid-template-columns: 1fr; }
     .hero-content h1 { font-size: 3rem; }
+    .nav-content { flex-wrap: wrap; gap: 16px; }
+    .nav-actions { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+    .nav-links { gap: 16px; }
 }

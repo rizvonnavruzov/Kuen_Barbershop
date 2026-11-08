@@ -1,30 +1,32 @@
 // Backend Version - Connected to Node.js Server
 const API_BASE = ""; // Base URL for API calls
 let is_open = true; // Status can be managed via backend too, but for now kept simple
-const closedMessage = "Kuen Barbershop is closed on Sundays. Please choose Monday through Saturday.";
 let pendingBooking = null;
+let overlayState = null;
+let slotsRequestId = 0;
 
 function checkStatus() {
     const banner = document.getElementById('status-banner');
     const bookBtn = document.getElementById('book-btn');
+    if (!banner || !bookBtn) return;
     
     if (!is_open) {
         banner.style.display = 'block';
         banner.className = 'status-closed';
-        banner.innerText = closedMessage;
+        banner.innerText = t('shop.closedBanner');
         bookBtn.disabled = true;
-        bookBtn.innerText = "SHOP CLOSED";
+        bookBtn.innerText = t('shop.closedButton');
     } else {
         banner.style.display = 'none';
         bookBtn.disabled = false;
-        bookBtn.innerText = "Continue to Booking Request";
+        bookBtn.innerText = t('form.submit');
     }
 }
 
 function toggleShopStatus() {
     is_open = !is_open;
     checkStatus();
-    alert(`Shop is now ${is_open ? 'OPEN' : 'CLOSED'}`);
+    alert(t(is_open ? 'shop.statusOpen' : 'shop.statusClosed'));
 }
 
 // Dynamic Slot Generation Logic
@@ -42,14 +44,20 @@ function getSlotsForService(service) {
 }
 
 function renderTimeSlots() {
-    const service = document.getElementById('service').value;
-    const dateStr = document.getElementById('date').value;
+    const serviceEl = document.getElementById('service');
+    const dateEl = document.getElementById('date');
     const grid = document.getElementById('time-grid');
-    document.getElementById('selected-time').value = '';
-    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888;">Loading slots...</p>';
+    const selectedInput = document.getElementById('selected-time');
+    if (!serviceEl || !dateEl || !grid || !selectedInput) return;
+
+    const service = serviceEl.value;
+    const dateStr = dateEl.value;
+    const previouslySelected = selectedInput.value;
+    selectedInput.value = '';
+    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888;">' + t('slots.loading') + '</p>';
     
     if (!dateStr) {
-        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888;">Please select a date first.</p>';
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888;">' + t('slots.pickDate') + '</p>';
         return;
     }
 
@@ -57,15 +65,17 @@ function renderTimeSlots() {
     const dayOfWeek = selectedDate.getDay();
 
     if (dayOfWeek === 0) {
-        document.getElementById('selected-time').value = '';
-        grid.innerHTML = '<p style="color: #ff4d4d; grid-column: 1/-1; text-align: center; background: rgba(255,0,0,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.2);"><strong>Closed on Sundays.</strong><br>Please select a day from Monday to Saturday.</p>';
+        selectedInput.value = '';
+        grid.innerHTML = '<p style="color: #ff4d4d; grid-column: 1/-1; text-align: center; background: rgba(255,0,0,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.2);"><strong>' + t('slots.sundayClosed') + '</strong><br>' + t('slots.sundayHint') + '</p>';
         return;
     }
 
     // Fetch taken slots from server
+    const requestId = ++slotsRequestId;
     fetch(`${API_BASE}/api/bookings?date=${dateStr}`)
         .then(res => res.json())
         .then(takenSlots => {
+            if (requestId !== slotsRequestId) return;
             const slots = getSlotsForService(service);
             const now = new Date();
             const isToday = selectedDate.toDateString() === now.toDateString();
@@ -87,21 +97,25 @@ function renderTimeSlots() {
 
                 if (isTaken || isPast) {
                     slot.classList.add('taken');
-                    slot.title = isTaken ? "Already booked" : "Time passed";
+                    slot.title = isTaken ? t('slots.booked') : t('slots.passed');
                 } else {
                     slot.onclick = () => selectTime(slot, time);
+                    if (previouslySelected === time) {
+                        slot.classList.add('selected');
+                        selectedInput.value = time;
+                    }
                     availableCount++;
                 }
                 grid.appendChild(slot);
             });
 
             if (availableCount === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ffbc00; background: rgba(255,188,0,0.1); padding: 10px; border-radius: 10px;">All slots for this day are fully booked or past. Try another date!</p>';
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ffbc00; background: rgba(255,188,0,0.1); padding: 10px; border-radius: 10px;">' + t('slots.full') + '</p>';
             }
         })
         .catch(err => {
             console.error("Error fetching slots:", err);
-            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ff4d4d;">Error connecting to server. Please try again later.</p>';
+            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ff4d4d;">' + t('slots.serverError') + '</p>';
         });
 }
 
@@ -122,7 +136,7 @@ window.submitBookingRequest = function() {
     
     const confirmBtn = document.querySelector('#payment-modal .btn-primary');
     const originalText = confirmBtn.innerText;
-    confirmBtn.innerText = "Processing...";
+    confirmBtn.innerText = t('status.processing');
     confirmBtn.disabled = true;
 
     fetch(`${API_BASE}/api/book`, {
@@ -133,7 +147,7 @@ window.submitBookingRequest = function() {
     .then(res => res.json())
     .then(data => {
         if (data.error) {
-            alert(data.error);
+            alert(localizeError(data.error));
             confirmBtn.innerText = originalText;
             confirmBtn.disabled = false;
         } else {
@@ -143,15 +157,49 @@ window.submitBookingRequest = function() {
         }
     })
     .catch(err => {
-        alert("Something went wrong connection to the server. Please check if backend is running.");
+        alert(t('errors.connection'));
         confirmBtn.innerText = originalText;
         confirmBtn.disabled = false;
     });
 };
 
+function applyOverlayCopy() {
+    if (!overlayState) return;
+    const title = document.getElementById('status-title');
+    const desc = document.getElementById('status-desc');
+    if (!title || !desc) return;
+
+    if (overlayState === 'confirmed') {
+        title.innerText = t('status.paymentReceived');
+        title.style.color = 'var(--primary-color)';
+        desc.innerText = t('status.confirmedRedirect');
+    } else if (overlayState === 'rejected') {
+        title.innerText = t('status.paymentMissing');
+        title.style.color = '#e74c3c';
+        desc.innerText = t('status.paymentMissingDesc');
+    } else {
+        title.innerText = t('status.submittedTitle');
+        title.style.color = 'var(--primary-color)';
+        desc.innerText = t('status.submittedDesc');
+    }
+
+    const closeBtn = document.getElementById('status-close');
+    if (closeBtn) closeBtn.innerText = t('status.close');
+}
+
+function fillPaymentSummary() {
+    const summary = document.getElementById('payment-summary');
+    if (!summary) return;
+    const service = (pendingBooking && pendingBooking.service) || (document.getElementById('service') && document.getElementById('service').value) || 'haircut';
+    const price = service === 'haircut' ? 80 : 20;
+    summary.textContent = t('modal.summary', { service: serviceLabel(service), amount: price });
+}
+
 function showStatusOverlay(bookingId) {
     const overlay = document.getElementById('status-overlay');
     overlay.style.display = 'flex';
+    overlayState = 'pending';
+    applyOverlayCopy();
     
     // Poll for status
     const pollInterval = setInterval(() => {
@@ -160,26 +208,28 @@ function showStatusOverlay(bookingId) {
             .then(data => {
                 if (data.status === 'confirmed') {
                     clearInterval(pollInterval);
-                    document.getElementById('status-title').innerText = "Payment Received!";
-                    document.getElementById('status-desc').innerText = "Your booking is confirmed. Redirecting...";
+                    overlayState = 'confirmed';
+                    applyOverlayCopy();
                     document.getElementById('status-spinner').style.display = 'none';
                     setTimeout(() => {
-                        alert("Your booking is confirmed. See you soon!");
+                        alert(t('status.confirmedAlert'));
                         location.reload();
                     }, 2000);
                 } else if (data.status === 'rejected') {
                     clearInterval(pollInterval);
-                    document.getElementById('status-title').innerText = "Payment Not Received";
-                    document.getElementById('status-title').style.color = "#e74c3c";
-                    document.getElementById('status-desc').innerText = "We could not confirm your payment. Please contact us on WhatsApp at +992 100080400.";
+                    overlayState = 'rejected';
+                    applyOverlayCopy();
                     document.getElementById('status-spinner').style.display = 'none';
-                    
-                    const closeBtn = document.createElement('button');
-                    closeBtn.innerText = "Close";
-                    closeBtn.className = "btn-secondary";
-                    closeBtn.style.marginTop = "20px";
-                    closeBtn.onclick = () => location.reload();
-                    document.querySelector('#status-overlay .modal-content').appendChild(closeBtn);
+
+                    if (!document.getElementById('status-close')) {
+                        const closeBtn = document.createElement('button');
+                        closeBtn.id = 'status-close';
+                        closeBtn.innerText = t('status.close');
+                        closeBtn.className = "btn-secondary";
+                        closeBtn.style.marginTop = "20px";
+                        closeBtn.onclick = () => location.reload();
+                        document.querySelector('#status-overlay .modal-content').appendChild(closeBtn);
+                    }
                 }
             })
             .catch(err => console.error("Polling error:", err));
@@ -209,17 +259,12 @@ if (form) {
         
         const time = document.getElementById('selected-time').value;
         if (!time) {
-            alert("Please select a time slot!");
+            alert(t('slots.pickTime'));
             return;
         }
 
         const service = document.getElementById('service').value;
-        const price = service === 'haircut' ? 80 : 20;
 
-        // Populate and show modal
-        document.getElementById('payment-amount').innerText = price;
-        document.getElementById('payment-service').innerText = service === 'haircut' ? 'Haircut' : 'Beard Trim';
-        
         pendingBooking = {
             name: document.getElementById('name').value,
             phone: document.getElementById('phone').value,
@@ -229,9 +274,17 @@ if (form) {
             bank: document.getElementById('bank').value
         };
 
+        fillPaymentSummary();
         document.getElementById('payment-modal').style.display = 'flex';
     });
 }
+
+document.addEventListener('languagechange', () => {
+    checkStatus();
+    renderTimeSlots();
+    fillPaymentSummary();
+    applyOverlayCopy();
+});
 
 // Start up
 renderTimeSlots();
