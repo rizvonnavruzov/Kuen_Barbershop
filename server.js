@@ -58,16 +58,15 @@ app.post('/api/book', (req, res) => {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
-    const dayOfWeek = new Date(date).getDay();
-
-    if (service === 'haircut') {
-        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-            return res.status(400).json({ error: 'Haircuts are only available on Saturday and Sunday' });
-        }
-    } else if (service === 'beard') {
-        if (dayOfWeek !== 5) {
-            return res.status(400).json({ error: 'Beard trims are only available on Friday' });
-        }
+    const dayOfWeek = new Date(`${date}T00:00:00Z`).getUTCDay();
+    if (Number.isNaN(dayOfWeek)) {
+        return res.status(400).json({ error: 'Please provide a valid booking date' });
+    }
+    if (dayOfWeek === 0) {
+        return res.status(400).json({ error: 'Kuen Barbershop is closed on Sunday. Book Monday through Saturday.' });
+    }
+    if (service !== 'haircut' && service !== 'beard') {
+        return res.status(400).json({ error: 'Please select a valid service' });
     }
 
     const db = JSON.parse(fs.readFileSync(DB_FILE));

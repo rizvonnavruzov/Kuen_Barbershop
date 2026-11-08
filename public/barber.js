@@ -1,7 +1,7 @@
 // Backend Version - Connected to Node.js Server
 const API_BASE = ""; // Base URL for API calls
 let is_open = true; // Status can be managed via backend too, but for now kept simple
-const closedMessage = "Sorry bro, the barbershop is closed right now. We will be back soon!";
+const closedMessage = "Kuen Barbershop is closed on Sundays. Please choose Monday through Saturday.";
 let pendingBooking = null;
 
 function checkStatus() {
@@ -17,7 +17,7 @@ function checkStatus() {
     } else {
         banner.style.display = 'none';
         bookBtn.disabled = false;
-        bookBtn.innerText = "Confirm & Pay via QR";
+        bookBtn.innerText = "Continue to Booking Request";
     }
 }
 
@@ -45,6 +45,7 @@ function renderTimeSlots() {
     const service = document.getElementById('service').value;
     const dateStr = document.getElementById('date').value;
     const grid = document.getElementById('time-grid');
+    document.getElementById('selected-time').value = '';
     grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888;">Loading slots...</p>';
     
     if (!dateStr) {
@@ -52,16 +53,12 @@ function renderTimeSlots() {
         return;
     }
 
-    const selectedDate = new Date(dateStr);
+    const selectedDate = new Date(`${dateStr}T00:00:00`);
     const dayOfWeek = selectedDate.getDay();
 
-    // Frontend validation for service dates
-    if (service === 'haircut' && dayOfWeek !== 0 && dayOfWeek !== 6) {
-        grid.innerHTML = '<p style="color: #ff4d4d; grid-column: 1/-1; text-align: center; background: rgba(255,0,0,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.2);"><strong>Haircuts are WEEKENDS ONLY.</strong><br>Please select a Saturday or Sunday on the calendar above.</p>';
-        return;
-    }
-    if (service === 'beard' && dayOfWeek !== 5) {
-        grid.innerHTML = '<p style="color: #ff4d4d; grid-column: 1/-1; text-align: center; background: rgba(255,0,0,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.2);"><strong>Beard trims are FRIDAYS ONLY.</strong><br>Please select a Friday on the calendar above.</p>';
+    if (dayOfWeek === 0) {
+        document.getElementById('selected-time').value = '';
+        grid.innerHTML = '<p style="color: #ff4d4d; grid-column: 1/-1; text-align: center; background: rgba(255,0,0,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.2);"><strong>Closed on Sundays.</strong><br>Please select a day from Monday to Saturday.</p>';
         return;
     }
 
@@ -120,7 +117,7 @@ window.closePaymentModal = function() {
     pendingBooking = null;
 };
 
-window.confirmPayment = function() {
+window.submitBookingRequest = function() {
     if (!pendingBooking) return;
     
     const confirmBtn = document.querySelector('#payment-modal .btn-primary');
@@ -164,17 +161,17 @@ function showStatusOverlay(bookingId) {
                 if (data.status === 'confirmed') {
                     clearInterval(pollInterval);
                     document.getElementById('status-title').innerText = "Payment Received!";
-                    document.getElementById('status-desc').innerText = "The master has confirmed your payment. Redirecting...";
+                    document.getElementById('status-desc').innerText = "Your booking is confirmed. Redirecting...";
                     document.getElementById('status-spinner').style.display = 'none';
                     setTimeout(() => {
-                        alert("SUCCESS! Your booking is confirmed. See you then bro!");
+                        alert("Your booking is confirmed. See you soon!");
                         location.reload();
                     }, 2000);
                 } else if (data.status === 'rejected') {
                     clearInterval(pollInterval);
                     document.getElementById('status-title').innerText = "Payment Not Received";
                     document.getElementById('status-title').style.color = "#e74c3c";
-                    document.getElementById('status-desc').innerText = "The master could not find your payment. Please contact +996 552 766 222.";
+                    document.getElementById('status-desc').innerText = "We could not confirm your payment. Please contact us on WhatsApp at +992 100080400.";
                     document.getElementById('status-spinner').style.display = 'none';
                     
                     const closeBtn = document.createElement('button');
@@ -194,7 +191,8 @@ const dateInput = document.getElementById('date');
 const serviceInput = document.getElementById('service');
 
 if (dateInput) {
-    const todayStr = new Date().toISOString().split('T')[0];
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     dateInput.setAttribute('min', todayStr);
     dateInput.value = todayStr;
     dateInput.addEventListener('change', renderTimeSlots);
@@ -216,7 +214,7 @@ if (form) {
         }
 
         const service = document.getElementById('service').value;
-        const price = service === 'haircut' ? 400 : 200;
+        const price = service === 'haircut' ? 80 : 20;
 
         // Populate and show modal
         document.getElementById('payment-amount').innerText = price;

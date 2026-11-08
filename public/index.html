@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URJ Barbershop | Luxury Men's Grooming</title>
+    <title>Kuen Barbershop | Men's Grooming in Khorog</title>
     <link rel="stylesheet" href="barber.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,8 +15,8 @@
     <nav class="navbar">
         <div class="container nav-content">
             <div class="logo">
-                <img src="logo.png" alt="URJ Wolf Logo">
-                <span>URJ Barbershop</span>
+                <img src="mountain-logo.svg" alt="Kuen Barbershop mountain logo">
+                <span>Kuen Barbershop</span>
             </div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
@@ -29,8 +29,8 @@
     <!-- Home Section -->
     <header id="home">
         <div class="hero-content">
-            <h1>URJ BARBERSHOP</h1>
-            <p>Professional Men's Haircuts • UCA Naryn</p>
+            <h1>KUEN BARBERSHOP</h1>
+            <p>Professional Men's Haircuts • Khorog City</p>
             <a href="#booking" class="btn-primary" style="width: auto;">Book Appointment</a>
         </div>
     </header>
@@ -39,14 +39,14 @@
     <section class="container services" id="price">
         <div class="service-grid">
             <div class="glass-panel service-card">
-                <h3>Saturday & Sunday</h3>
-                <p>Full Men's Haircut + Styling. Exclusive weekend service at UCA.</p>
-                <div class="price">400 KGS</div>
+                <h3>Men's Haircut</h3>
+                <p>Full men's haircut and styling. Available Monday through Saturday.</p>
+                <div class="price">80 сомони</div>
             </div>
             <div class="glass-panel service-card">
-                <h3>Friday Special</h3>
-                <p>Beard Trim + Line-up. Perfect for a quick weekend sharpen up.</p>
-                <div class="price">200 KGS</div>
+                <h3>Beard Trim</h3>
+                <p>Beard trim and line-up. Available Monday through Saturday.</p>
+                <div class="price">20 сомони</div>
             </div>
         </div>
     </section>
@@ -64,7 +64,7 @@
                         </div>
                         <div class="form-group">
                             <label>Phone Number</label>
-                            <input type="tel" id="phone" placeholder="+996 ..." required>
+                            <input type="tel" id="phone" placeholder="+992 ..." required>
                         </div>
                     </div>
                     
@@ -72,8 +72,8 @@
                         <div class="form-group">
                             <label>Select Service</label>
                             <select id="service" required>
-                                <option value="haircut">Men's Haircut (90 min) - 400 KGS</option>
-                                <option value="beard">Beard Trim (30 min) - 200 KGS</option>
+                                <option value="haircut">Men's Haircut (90 min) - 80 сомони</option>
+                                <option value="beard">Beard Trim (30 min) - 20 сомони</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -93,14 +93,13 @@
                     <div class="form-group">
                         <label>Payment Method</label>
                         <select id="bank" required>
-                            <option value="kicb">KICB (Kyrgyzstan)</option>
                             <option value="alif">Alif (Tajikistan)</option>
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn-primary" id="book-btn">Confirm & Pay via QR</button>
+                    <button type="submit" class="btn-primary" id="book-btn">Continue to Booking Request</button>
                     <p style="font-size: 0.85rem; color: #888; text-align: center; margin-top: 20px;">
-                        * 400 SOM will be deducted automatically from your card.
+                        * After submitting, contact us on WhatsApp for Alif payment details. Your booking is confirmed after payment is verified.
                     </p>
                 </form>
             </div>
@@ -111,42 +110,33 @@
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-info">
-                <h3>URJ Barbershop</h3>
-                <p>Naryn, UCA • Open Saturday & Sunday Only</p>
+                <h3>Kuen Barbershop</h3>
+                <p>Khorog City • Monday–Saturday, 10:00–17:00 • Sunday closed</p>
                 <div style="margin-top: 20px;">
-                    <p><strong>WhatsApp:</strong> +996 552 766 222</p>
-                    <p><strong>Telegram:</strong> +996 552 766 222</p>
-                    <p><strong>Instagram:</strong> _a1imamad0v_</p>
+                    <p><strong>Phone:</strong> <a href="tel:+992100080400">+992 100080400</a></p>
+                    <p><strong>WhatsApp:</strong> <a href="https://wa.me/992100080400" target="_blank" rel="noopener noreferrer">+992 100080400</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:mubinkhalimov57@gmail.com">mubinkhalimov57@gmail.com</a></p>
                 </div>
             </div>
             <div class="footer-social">
-                <a href="https://instagram.com/_a1imamad0v_" target="_blank">Instagram</a>
-                <a href="https://wa.me/996552766222" target="_blank">WhatsApp</a>
-                <a href="https://t.me/996552766222" target="_blank">Telegram</a>
+                <a href="https://wa.me/992100080400" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="mailto:mubinkhalimov57@gmail.com">Email</a>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 URJ Barbershop</p>
+            <p>© 2026 Kuen Barbershop</p>
         </div>
     </footer>
 
     <!-- Payment Modal -->
     <div id="payment-modal" class="modal-overlay" style="display: none;">
         <div class="glass-panel modal-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 20px;">Confirm & Pay</h2>
-            <p>Please scan the KICB QR code below to pay <span id="payment-amount">400</span> SOM for your <span id="payment-service">haircut</span>.</p>
-            
-            <div class="qr-container">
-                <img src="kicb_qr.png" alt="KICB QR Code" class="qr-image">
-            </div>
-
-            <p style="font-size: 0.9rem; color: #888; margin-top: 15px;">
-                <strong>Pay to:</strong> АМИН А. (+996 552 766 222)
-            </p>
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;">Submit Booking Request</h2>
+            <p>Your <span id="payment-service">haircut</span> costs <span id="payment-amount">80</span> сомони. Contact us on WhatsApp for Alif payment details. We will confirm your booking after payment is verified.</p>
 
             <div class="modal-buttons">
                 <button onclick="closePaymentModal()" class="btn-secondary">Cancel</button>
-                <button onclick="confirmPayment()" class="btn-primary">I have Paid & Confirm Booking</button>
+                <button onclick="submitBookingRequest()" class="btn-primary">Submit Request</button>
             </div>
         </div>
     </div>
@@ -154,11 +144,11 @@
     <!-- Status Overlay -->
     <div id="status-overlay" class="modal-overlay" style="display: none;">
         <div class="glass-panel modal-content">
-            <h2 id="status-title" style="color: var(--primary-color);">Verifying Payment...</h2>
-            <p id="status-desc">We are checking if the money has arrived on the master's card.</p>
+            <h2 id="status-title" style="color: var(--primary-color);">Booking Request Submitted</h2>
+            <p id="status-desc">The master will review your booking request and payment.</p>
             <div id="status-spinner" class="spinner"></div>
             <p style="font-size: 0.9rem; color: #888; margin-top: 20px;">
-                Please do not close this page. This usually takes 1-2 minutes.
+                Keep this page open while we check your booking status.
             </p>
         </div>
     </div>

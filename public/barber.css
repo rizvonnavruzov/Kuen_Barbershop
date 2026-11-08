@@ -231,6 +231,15 @@ input, select {
     margin-bottom: 8px;
 }
 
+.footer-info a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.footer-info a:hover {
+    text-decoration: underline;
+}
+
 .footer-social {
     display: flex;
     gap: 20px;

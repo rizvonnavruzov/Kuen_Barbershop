@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title">
+  <title id="title">Kuen Barbershop mountain mark</title>
+  <circle cx="50" cy="50" r="45" fill="#111" stroke="#d4af37" stroke-width="3"/>
+  <path d="M17 72 40 38l12 17 9-13 22 30H17Z" fill="#d4af37" stroke="#d4af37" stroke-linejoin="round" stroke-width="2"/>
+  <path d="m33 48 7-10 8 12-7-3-4 5M55 56l6-14 7 10-6-2-4 5" fill="#111"/>
+  <path d="M24 78h52" stroke="#d4af37" stroke-linecap="round" stroke-width="3"/>
+</svg>
